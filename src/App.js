@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import {Card, Button} from 'react-bootstrap';
+import QueryForm from './components/Form.js'
+import { useState, useEffect } from 'react';
+
 
 function App() {
+  const [isGameStarted, setIsGameStarted] = useState(false);
+
+  useEffect(() => {
+    console.log('test');
+    return () => {
+    }
+  }, [isGameStarted])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="container">
+        {
+          isGameStarted ?
+            <div>
+              <h1>hi</h1>
+            </div>
+            :
+            <QueryForm updateGameState={(gameState, reponseJson) => {
+                setIsGameStarted(gameState);
+                
+              }
+            }/>
+        }
+      </div>
     </div>
+
   );
 }
 
