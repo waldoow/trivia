@@ -2,6 +2,9 @@ import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Slider from 'react-bootstrap-range-slider';
+import { useDispatch } from 'react-redux';
+import * as gameTypes from '../actions/game.js';
+
 
 const QueryForm = (props) => {
     const stepValue = 5;
@@ -14,7 +17,7 @@ const QueryForm = (props) => {
     const [formDifficulty, setFormDifficulty]         = useState(null);
     const [formTheme, setFormTheme]                   = useState(9)
 
-    console.log(props)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         axios
@@ -24,8 +27,8 @@ const QueryForm = (props) => {
             })
         ;
     }, [])
-    
-    function submit(updateGameState) {
+
+     async function submit() {
         let baseUrl = 'https://opentdb.com/api.php?' + `&category=${formTheme}&amount=${currentSliderValue}` 
 
         if (null !== formType) {
@@ -36,12 +39,24 @@ const QueryForm = (props) => {
             baseUrl = baseUrl + `&difficulty=${formDifficulty}`;
         }
 
-        axios
+        const game = await axios
             .get(baseUrl)
-            .then(response => console.log(response))
+            .then(response => {
+                return response.data.results;
+            })
         ;
 
-        props.updateGameState(true);
+        return game;
+        // props.updateGameState(true);
+    }
+
+    const saveGame = async () => {
+        const game = await submit();
+
+        dispatch({
+            type: gameTypes.ADD_GAME,
+            payload: game
+        })
     }
 
     return (
@@ -54,7 +69,6 @@ const QueryForm = (props) => {
                     <Form.Control as="select">
                         {
                             Object.keys(themes).map(key => {
-
                                 return <option value={themes[key].id} key={key}>{themes[key].name}</option>
                             })
                         }
@@ -72,6 +86,7 @@ const QueryForm = (props) => {
                         <option value="hard">Hard</option>
                     </Form.Control>
                 </Form.Group>
+
                 <Slider
                     value={currentSliderValue}
                     onChange={changeEvent => setCurrentSliderValue(changeEvent.target.value)}
@@ -81,6 +96,7 @@ const QueryForm = (props) => {
                     variant="dark"
                     // ref
                 />
+
                 <Form.Group controlId="formType" onChange={(event)=>{
                     setFormType(event.target.value);
                 }}>
@@ -91,7 +107,8 @@ const QueryForm = (props) => {
                         <option value="boolean">True / False</option>
                     </Form.Control>
                 </Form.Group>
-                <Button variant="primary" onClick={submit}>
+
+                <Button variant="primary" onClick={saveGame}>
                     Submit
                 </Button>
             </Form>
