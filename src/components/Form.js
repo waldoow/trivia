@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import Slider from 'react-bootstrap-range-slider';
 import { useDispatch } from 'react-redux';
-import * as gameTypes from '../actions/game.js';
+import * as gameTypes from '../actions/questions.js';
 
 
 const QueryForm = (props) => {
@@ -29,7 +29,7 @@ const QueryForm = (props) => {
     }, [])
 
      async function submit() {
-        let baseUrl = 'https://opentdb.com/api.php?' + `&category=${formTheme}&amount=${currentSliderValue}` 
+        let baseUrl = `https://opentdb.com/api.php?&category=${formTheme}&amount=${currentSliderValue}` 
 
         if (null !== formType) {
             baseUrl = baseUrl + `&type=${formType}`;
@@ -39,23 +39,23 @@ const QueryForm = (props) => {
             baseUrl = baseUrl + `&difficulty=${formDifficulty}`;
         }
 
-        const game = await axios
+        const questions = await axios
             .get(baseUrl)
             .then(response => {
                 return response.data.results;
             })
         ;
 
-        return game;
+        return questions;
         // props.updateGameState(true);
     }
 
     const saveGame = async () => {
-        const game = await submit();
+        const questions = await submit();
 
         dispatch({
-            type: gameTypes.ADD_GAME,
-            payload: game
+            type: gameTypes.SET_QUESTIONS,
+            questions
         })
     }
 
