@@ -47,7 +47,6 @@ const QueryForm = (props) => {
         ;
 
         return questions;
-        // props.updateGameState(true);
     }
 
     const saveGame = async () => {
@@ -55,7 +54,7 @@ const QueryForm = (props) => {
 
         dispatch({
             type: gameTypes.SET_QUESTIONS,
-            questions
+            payload: questions
         })
     }
 

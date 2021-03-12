@@ -1,8 +1,6 @@
 import QueryForm from '../components/form.js'
 import Game from '../components/game.js'
-import store from '../store';
-import {connect} from 'react-redux';
-import gameTypes from '../actions/questions.js'
+import { connect } from 'react-redux';
 
 function App(props) {
   return (
@@ -24,17 +22,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // newGame : dispatch({
-    //   type: gameTypes.SET_QUESTIONS,
-    //   []
-    // })
-  }
-}
-
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
 )(App);

@@ -1,24 +1,23 @@
 import { Card, Button } from 'react-bootstrap';
 import { useStore } from 'react-redux';
 import { useState, useEffect } from 'react';
+import Question from './game/question.js';
 
 
-const Game = () => {
+const Game = (props) => {
     const [question, setQuestion]                         = useState({});
     const [isGameOver, setIsGameOver]                     = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-    const allQuestions  = useStore().getState().questions.currentQuestions[0];
-    const questionsCount = allQuestions.length;
+    const allQuestions                                    = useStore().getState().questions.currentQuestions[0];
+    const questionsCount                                  = allQuestions.length;
 
     useEffect(() => {
         setQuestion(allQuestions[currentQuestionIndex]);
+
         if (questionsCount - 1 === currentQuestionIndex) {
             setIsGameOver(true);
         }
     }, [currentQuestionIndex])
-
-
 
     function getQuestionsSetup(allQuestions) {
         allQuestions.forEach(question => {
@@ -34,21 +33,21 @@ const Game = () => {
     }
 
     function Template(isGameOver) {
-        if (isGameOver) {
+        if (true === isGameOver) {
             return (
                 <h1>game over</h1>
             )
         }
 
         return (
-            <h1>game on</h1>
+            <Question />
         )
     }
 
     getQuestionsSetup(allQuestions);
 
     return (
-        <Template isGameOver={isGameOver} />
+        <Template isGameOver={isGameOver}/>
     )
 }
 
