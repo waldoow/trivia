@@ -1,23 +1,16 @@
 import { Card, Button } from 'react-bootstrap';
-import { useStore } from 'react-redux';
+import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Question from './game/question.js';
+import game from '../reducers/questions.js';
+import Summary from './summary.js';
 
 
 const Game = (props) => {
-    const [question, setQuestion]                         = useState({});
-    const [isGameOver, setIsGameOver]                     = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const allQuestions                                    = useStore().getState().questions.currentQuestions[0];
+    const [isGameOver, setIsGameOver]                     = useState(false)
+    const currentIndex = props.questions.questionIndex;
+    const allQuestions                                    = props.questions.currentQuestions[0];
     const questionsCount                                  = allQuestions.length;
-
-    useEffect(() => {
-        setQuestion(allQuestions[currentQuestionIndex]);
-
-        if (questionsCount - 1 === currentQuestionIndex) {
-            setIsGameOver(true);
-        }
-    }, [currentQuestionIndex])
 
     function getQuestionsSetup(allQuestions) {
         allQuestions.forEach(question => {
@@ -33,15 +26,7 @@ const Game = (props) => {
     }
 
     function Template(isGameOver) {
-        if (true === isGameOver) {
-            return (
-                <h1>game over</h1>
-            )
-        }
-
-        return (
-            <Question />
-        )
+        return (questionsCount === currentIndex ? <Summary /> : <Question /> );
     }
 
     getQuestionsSetup(allQuestions);
@@ -51,4 +36,10 @@ const Game = (props) => {
     )
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+    questions: state.questions
+});
+
+export default connect(
+    mapStateToProps,
+)(Game);

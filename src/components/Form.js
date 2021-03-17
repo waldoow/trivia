@@ -93,7 +93,6 @@ const QueryForm = (props) => {
                     min={sliderMin}
                     step={stepValue}
                     variant="dark"
-                    // ref
                 />
 
                 <Form.Group controlId="formType" onChange={(event)=>{

@@ -5,8 +5,8 @@ import * as questionsType from '../../../actions/questions.js';
 import './button.css';
 
 const ButtonRow = (props) => {
-    const answers = props.question.answers;
-    const correctAnswer = props.question.correct_answer;
+    const answers = props.question.question.answers;
+    const correctAnswer = props.question.question.correct_answer;
 
     console.log(props);
 
@@ -26,8 +26,9 @@ const ButtonRow = (props) => {
 const submit = (answer, correctAnswer, props) => {
     if (answer === correctAnswer) {
         props.addPoint();
-        props.updateIndex();
     }
+
+    props.updateIndex();
 }
 
 const mapDispatchToProps = (dispatch) => {

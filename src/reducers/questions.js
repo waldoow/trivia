@@ -16,13 +16,16 @@ const game = (state = initialState, action) => {
         case actions.SET_QUESTION_INDEX:
             return {
                 ...state,
-                questionIndex: state.questionIndex + 1
+                questionIndex: state.questionIndex + 1,
             }
         case actions.ADD_EARNED_POINT:
             return {
                 ...state,
-                pointEarned: state.pointEarned + 1
+                pointEarned: state.pointEarned + 1,
+                // questionIndex: state.questionIndex + 1
             }
+        case actions.NEW_GAME:
+            return initialState;
         default:
             return state;
 	}
